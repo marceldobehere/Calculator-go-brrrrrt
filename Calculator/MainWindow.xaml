@@ -1,0 +1,99 @@
+﻿<Window x:Class="Calculator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Calculator"
+        mc:Ignorable="d"
+        Title="Masls super krasser Rechner" Height="700" Width="900" AllowsTransparency="True" WindowStyle="None" BorderThickness="2,10,5,2" MinWidth="800" MinHeight="500" MaxWidth="2000" MaxHeight="1000" Padding="0,0,0,49" Margin="0,0,0,0">
+    <Window.Background>
+        <SolidColorBrush Color="#FF071B47" Opacity="0.7"/>
+    </Window.Background>
+    <Grid x:Name="Data" Width="900" Height="600" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Border HorizontalAlignment="Center" VerticalAlignment="Top"
+              CornerRadius="5,5,0,0" Margin="0,-38,0,0" MouseLeftButtonDown="DragWindow" Height="56" Width="880">
+            <Border.Background>
+                <SolidColorBrush Color="#FF065478" Opacity="0.01"/>
+            </Border.Background>
+            <Grid Height="55" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,2,0"
+            Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}" Height="37" HorizontalAlignment="Left"/>
+                <Button Content="x" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="823,0,0,0" FontSize="20"
+                  Width="52" Height="32" Padding="0" Command="" Click="MenuButtons" Background="#FF063047" Foreground="#FF4AFBF3"/>
+                <Button Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="766,0,0,0" FontSize="20"
+                    Width="52" Height="32" Padding="0" Command="" Click="MenuButtons" Background="#FF063047" Foreground="#FF4AFBF3"/>
+                <Button Content="-" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="709,0,0,0" FontSize="20"
+                    Width="52" Height="32" Padding="0" Command="" Click="MenuButtons" Background="#FF063047" Foreground="#FF4AFBF3"/>
+            </Grid>
+        </Border>
+
+        <Grid Margin="0,176,0,-34">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Center" Orientation="Horizontal"/>
+
+            <Button Grid.Column="5" Grid.Row="4" x:Name="Button_0" Content="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08508B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="4" Grid.Row="3" x:Name="Button_1" Content="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08508B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="5" Grid.Row="3" x:Name="Button_2" Content="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08508B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="6" Grid.Row="3" x:Name="Button_3" Content="3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08508B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="4" Grid.Row="2" x:Name="Button_4" Content="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08508B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="5" Grid.Row="2" x:Name="Button_5" Content="5" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08508B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="6" Grid.Row="2" x:Name="Button_6" Content="6" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08508B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="4" Grid.Row="1" x:Name="Button_7" Content="7" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08508B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="5" Grid.Row="1" x:Name="Button_8" Content="8" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08508B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="6" Grid.Row="1" x:Name="Button_9" Content="9" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08508B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+
+            <Button Grid.Column="8" Grid.Row="0" x:Name="Button_div" Content="/" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="8" Grid.Row="1" x:Name="Button_mul" Content="*" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="8" Grid.Row="2" x:Name="Button_min" Content="-" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="8" Grid.Row="3" x:Name="Button_pl" Content="+" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="8" Grid.Row="4" x:Name="Button_eq" Content="=" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+
+            <Button Grid.Column="6" Grid.Row="0" x:Name="Button_fw" Content="&gt;" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="5" Grid.Row="0" x:Name="Button_bw" Content="&lt;" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="4" Grid.Row="0" x:Name="Button_ret" Content="CE" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+
+            <Button Grid.Column="6" Grid.Row="4" x:Name="Button_dot" Content="." HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF03407B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="4" Grid.Row="4" x:Name="Button_com" Content="," HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF03407B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+
+            <Button Grid.Column="3" Grid.Row="4" x:Name="Button_bc" Content="&#41;" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF03407B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="2" Grid.Row="4" x:Name="Button_bo" Content="&#40;" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF03407B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="1" Grid.Row="4" x:Name="Button_idk1" Content="->" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF03407B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="0" Grid.Row="4" x:Name="Button_idk2" Content="ans" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF03407B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+
+
+            <Button Grid.Column="0" x:Name="Button_textvsinput" Content="Textbox" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="193" Background="#FF08408B" FontSize="40" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Click="MenuButtons" Grid.ColumnSpan="2"/>
+            <Button Grid.Column="0" Grid.Row="1" x:Name="Button_AAA" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+            <Button Grid.Column="1" Grid.Row="1" x:Name="Button_AAAA" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
+
+
+
+        </Grid>
+        <TextBox x:Name="Textbox" HorizontalAlignment="Center" Margin="0,10,0,0" Text="2 + 2" TextWrapping="Wrap" VerticalAlignment="Top" Width="856" Height="83" Background="#FF023F5B" Foreground="#FF16EEFF" FontSize="40" FontFamily="Cambria Math" IsReadOnly="True" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+        </TextBox>
+        <TextBox x:Name="ResultBox" HorizontalAlignment="Center" Margin="0,111,0,0" Text="4" TextWrapping="Wrap" VerticalAlignment="Top" Width="856" Height="40" Background="#FF033349" Foreground="#FF1CEEFF" FontSize="30" FontFamily="Cambria Math" IsReadOnly="True" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto"/>
+
+
+
+    </Grid>
+</Window>
