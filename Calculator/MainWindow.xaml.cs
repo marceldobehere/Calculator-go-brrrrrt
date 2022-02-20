@@ -17,7 +17,12 @@ using System.Globalization;
 
 namespace Calculator
 {
-
+    //TODO: 
+    // FIX () freezing calculator
+    // ADD Variables
+    // Implement Functions
+    // Implement History
+    // Implement Customizability
 
 
     /// <summary>
