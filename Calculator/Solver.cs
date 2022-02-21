@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -68,7 +69,10 @@ namespace Calculator
                 else
                 {
                     if (tempmode == TokenMode.Number)
-                        tokens.Add(new NumberToken(double.Parse(tempstr)));
+                    {
+                        if (double.TryParse(tempstr, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture, out double temp1))
+                            tokens.Add(new NumberToken(temp1));
+                    }
                     else if (tempmode == TokenMode.FunctionOrVariable)
                         tokens.Add(new VariableorFunctionToken(tempstr));
                     else if (tempmode == TokenMode.InFunction)
@@ -85,7 +89,10 @@ namespace Calculator
             if (tempmode != TokenMode.Unknown)
             {
                 if (tempmode == TokenMode.Number)
-                    tokens.Add(new NumberToken(double.Parse(tempstr)));
+                {
+                    if (double.TryParse(tempstr, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture, out double temp1))
+                        tokens.Add(new NumberToken(temp1));
+                }
                 else if (tempmode == TokenMode.FunctionOrVariable)
                     tokens.Add(new VariableorFunctionToken(tempstr));
                 else if (tempmode == TokenMode.InFunction)
@@ -310,7 +317,7 @@ namespace Calculator
 
                 change = false;
 
-                foreach (OperatorToken.Operation currentop in new OperatorToken.Operation[] { OperatorToken.Operation.VAL, OperatorToken.Operation.SET})
+                foreach (OperatorToken.Operation currentop in new OperatorToken.Operation[] { OperatorToken.Operation.VAL, OperatorToken.Operation.SET })
                 {
 
                     for (int i = 0; i < tokens.Count; i++)
@@ -324,7 +331,7 @@ namespace Calculator
                                 {
                                     if (tokens[i - 1] is NumberToken && tokens[i + 1] is NumberToken)
                                     {
-                                        
+
                                     }
                                     else
                                     {
@@ -339,7 +346,7 @@ namespace Calculator
                                             }
                                             else
                                                 return new ErrorToken("SET Operator received incorrect arguments");
-                                            
+
                                         }
                                     }
 
@@ -433,16 +440,16 @@ namespace Calculator
                                     {
                                         if (op == OperatorToken.Operation.SET)
                                         {
-                                            if (tokens[i+1] is VariableToken)
+                                            if (tokens[i + 1] is VariableToken)
                                             {
                                                 SetVar(((VariableToken)tokens[i + 1]).varname, tokens[i - 1]);
-                                                tokens.RemoveRange(i-1, 3);
+                                                tokens.RemoveRange(i - 1, 3);
                                                 i = 0;
                                                 change = true;
                                             }
                                         }
                                     }
-                                    
+
                                 }
                                 else if (i < tokens.Count - 1)
                                 {

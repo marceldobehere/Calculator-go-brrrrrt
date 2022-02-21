@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Calculator
@@ -118,7 +119,7 @@ namespace Calculator
             public override string ToString()
             {
                 //return $"<Value: {value}>";
-                return $"{value}";
+                return $"{value.ToString(CultureInfo.InvariantCulture)}";
             }
             public NumberToken(double value)
             {
