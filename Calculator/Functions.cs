@@ -18,18 +18,18 @@ namespace Calculator
         private static EquationToken CallFunction(string name, EquationToken[] args)
         {
 
-            {
-                string data = $"Function  \"{name}\" called with args: ";
+            //{
+            //    string data = $"Function  \"{name}\" called with args: ";
 
-                foreach (EquationToken tok in args)
-                    data += $"{tok.ToString()} ";
+            //    foreach (EquationToken tok in args)
+            //        data += $"{tok.ToString()} ";
 
 
-                //MessageBox.Show(data);
-                AllocConsole();
-                Console.WriteLine(data + "\n");
-                Console.WriteLine();
-            }
+            //    //MessageBox.Show(data);
+            //    AllocConsole();
+            //    Console.WriteLine(data + "\n");
+            //    Console.WriteLine();
+            //}
 
             if (!FunctionArgs.ContainsKey(name))
                 return new ErrorToken($"Function \"{name}\" not found.");
