@@ -8,10 +8,12 @@ namespace Calculator
 {
     public partial class Solver
     {
-
-        public static void Init()
+        private static MainWindow window;
+        public static void Init(MainWindow window)
         {
+            Solver.window = window;
             variables = new Dictionary<string, EquationToken>();
+            InitFunctionArgs();
         }
 
         enum TokenMode
@@ -197,7 +199,12 @@ namespace Calculator
                         if (tokens[i] is BracketToken)
                         {
                             EquationToken temp = CalculateTokens(((BracketToken)tokens[i]).data.ToList());
-                            if (!temp.Equals(tokens[i]))
+                            if (temp == null && tokens[i] != null)
+                            {
+                                tokens[i] = temp;
+                                change = true;
+                            }
+                            else if (!temp.Equals(tokens[i]))
                             {
                                 tokens[i] = temp;
                                 change = true;
@@ -275,8 +282,15 @@ namespace Calculator
                         }
                         else if (tokens[i] is FunctionToken)
                         {
+                            EquationToken[] temparr = ((FunctionToken)tokens[i]).args;
+                            for (int i2 = 0; i2 < temparr.Length; i2++)
+                            {
+                                temparr[i2] = CalculateTokens(new List<EquationToken>() { temparr[i2] });
+                            }
+                            ((FunctionToken)tokens[i]).args = temparr;
+
                             EquationToken temp = CallFunction(((FunctionToken)tokens[i]).name, ((FunctionToken)tokens[i]).args);
-                            Console.WriteLine($"{temp.ToString()} == {tokens[i].ToString()} ? {temp.Equals(tokens[i])}");
+                            //Console.WriteLine($"{temp.ToString()} == {tokens[i].ToString()} ? {temp.Equals(tokens[i])}");
                             if (!temp.Equals(tokens[i]))
                             {
                                 tokens[i] = temp;
@@ -451,11 +465,6 @@ namespace Calculator
                 return null;
         }
 
-
-        private static EquationToken CallFunction(string name, EquationToken[] args)
-        {
-            return new NumberToken(0);
-        }
 
 
 

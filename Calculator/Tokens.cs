@@ -43,6 +43,11 @@ namespace Calculator
                     if (((FunctionSplitterToken)x).type != ((FunctionSplitterToken)y).type)
                         return false;
                 }
+                else if (x is ErrorToken)
+                {
+                    if (!((ErrorToken)x).message.Equals(((ErrorToken)y).message))
+                        return false;
+                }
                 else if (x is VariableToken)
                 {
                     if (((VariableToken)x).varname != ((VariableToken)y).varname)
@@ -104,6 +109,19 @@ namespace Calculator
             public NumberToken(double value)
             {
                 this.value = value;
+            }
+        }
+
+        public class ErrorToken : EquationToken
+        {
+            public string message;
+            public override string ToString()
+            {
+                return $"<ERROR: {message}>";
+            }
+            public ErrorToken(string message)
+            {
+                this.message = message;
             }
         }
 

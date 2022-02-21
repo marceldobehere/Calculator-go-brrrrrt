@@ -88,7 +88,7 @@ namespace Calculator
         {
             InitializeComponent();
             this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
-            Solver.Init();
+            Solver.Init(this);
             Input = "";
             Result = "";
             TextVSKeyboard = true;
@@ -153,6 +153,7 @@ namespace Calculator
         public void MenuButtons(object sender, RoutedEventArgs args)
         {
             string menudata = (string)((Button)sender).Content;
+            string name = ((Button)sender).Name;
             if (menudata.Equals("x"))
                 Close();
             else if (menudata.Equals("-"))
@@ -164,10 +165,16 @@ namespace Calculator
                 else
                     this.WindowState = System.Windows.WindowState.Normal;
             }
-            else if (((Button)sender).Name.Equals("Button_textvsinput"))
+            else if (name.Equals("Button_textvsinput"))
             {
                 TextVSKeyboard = !TextVSKeyboard;
             }
+            else if (name.Equals("Button_del_var"))
+            {
+                Solver.ClearVars();
+                Result = "Cleared Variables";
+            }
+            //Button_del_var
 
         }
 
