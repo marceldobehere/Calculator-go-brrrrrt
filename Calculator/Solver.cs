@@ -170,17 +170,17 @@ namespace Calculator
 
         private static EquationToken CalculateTokens(List<EquationToken> tokens)
         {
-            {
-                string data = $"Calculating Tokens: ";
+            //{
+            //    string data = $"Calculating Tokens: ";
 
-                foreach (EquationToken tok in tokens)
-                    data += $"{tok.ToString()} ";
+            //    foreach (EquationToken tok in tokens)
+            //        data += $"{tok.ToString()} ";
 
 
-                //MessageBox.Show(data);
-                AllocConsole();
-                Console.WriteLine(data + "\n");
-            }
+            //    //MessageBox.Show(data);
+            //    AllocConsole();
+            //    Console.WriteLine(data + "\n");
+            //}
 
 
 
@@ -352,6 +352,10 @@ namespace Calculator
                                             tokens[i + 1] = CalculateTokens(((BracketToken)tokens[i + 1]).data.ToList());
                                         else
                                             tokens[i + 1] = CalculateTokens(new List<EquationToken>() { tokens[i + 1] });
+
+                                        if (tokens[i + 1] is VariableToken)
+                                            tokens[i + 1] = GetVar(((VariableToken)tokens[i + 1]).varname);
+
                                         tokens.RemoveAt(i);
                                         i = 0;
                                         change = true;
