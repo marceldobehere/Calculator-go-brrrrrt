@@ -87,7 +87,7 @@ namespace Calculator
         {
             InitializeComponent();
             this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
-            Solver.Init(this);
+            Solver.Init();
             Input = "";
             Result = "";
             TextVSKeyboard = true;

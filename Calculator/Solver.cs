@@ -9,10 +9,9 @@ namespace Calculator
 {
     public partial class Solver
     {
-        private static MainWindow window;
-        public static void Init(MainWindow window)
+
+        public static void Init()
         {
-            Solver.window = window;
             variables = new Dictionary<string, EquationToken>();
             InitFunctionArgs();
         }
