@@ -30,7 +30,7 @@ namespace Calculator
                 for (int i = 0; i < temp.Length; i++)
                     if (!(args[i].GetType().Equals(temp[i])))
                     {
-                        if ((args[i] is VariableToken) && (temp[i] is NumberToken))
+                        if ((args[i] is VariableToken) && (temp[i].Equals(typeof(NumberToken))))
                         {
                             args[i] = GetVar(((VariableToken)args[i]).varname);
                         }
