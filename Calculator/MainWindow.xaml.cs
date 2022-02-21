@@ -18,16 +18,14 @@ using System.Globalization;
 namespace Calculator
 {
     //TODO: 
-    // FIX () freezing calculator
     // ADD Variables
+    // ADD Degree Radians
     // Implement Functions
     // Implement History
     // Implement Customizability
 
 
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    
     public partial class MainWindow : Window
     {
         string __input;
@@ -90,6 +88,7 @@ namespace Calculator
         {
             InitializeComponent();
             this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
+            Solver.Init();
             Input = "";
             Result = "";
             TextVSKeyboard = true;
@@ -305,7 +304,7 @@ namespace Calculator
             }
             else if (tempdata.Equals("->"))
             {
-                Input = "";
+                Input += "->";
             }
             else if (tempdata.Equals("?"))
             {

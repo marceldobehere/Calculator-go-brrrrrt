@@ -23,25 +23,39 @@ namespace Calculator
                 if (x == null || y == null)
                     return false;
 
-
-                if (x is NumberToken && y is NumberToken)
-                    if (((NumberToken)x).value == ((NumberToken)y).value)
-                        return true;
-                if (x is OperatorToken && y is OperatorToken)
-                    if (((OperatorToken)x).op == ((OperatorToken)y).op)
-                        return true;
-                if (x is FunctionSplitterToken && y is FunctionSplitterToken)
-                    if (((FunctionSplitterToken)x).type == ((FunctionSplitterToken)y).type)
-                        return true;
-                if (x is VariableToken && y is VariableToken)
-                    if (((VariableToken)x).varname == ((VariableToken)y).varname)
-                        return true;
-                if (x is VariableorFunctionToken && y is VariableorFunctionToken)
-                    if (((VariableorFunctionToken)x).name == ((VariableorFunctionToken)y).name)
-                        return true;
+                if (!x.GetType().FullName.Equals(y.GetType().FullName))
+                    return false;
 
 
-                if (x is BracketToken && y is BracketToken)
+
+                if (x is NumberToken)
+                {
+                    if (((NumberToken)x).value != ((NumberToken)y).value)
+                        return false;
+                }
+                else if (x is OperatorToken)
+                {
+                    if (((OperatorToken)x).op != ((OperatorToken)y).op)
+                        return false;
+                }
+                else if (x is FunctionSplitterToken)
+                {
+                    if (((FunctionSplitterToken)x).type != ((FunctionSplitterToken)y).type)
+                        return false;
+                }
+                else if (x is VariableToken)
+                {
+                    if (((VariableToken)x).varname != ((VariableToken)y).varname)
+                        return false;
+                }
+                else if (x is VariableorFunctionToken)
+                {
+                    if (((VariableorFunctionToken)x).name != ((VariableorFunctionToken)y).name)
+                        return false;
+                }
+
+
+                else if (x is BracketToken)
                 {
                     EquationToken[] xarr = ((BracketToken)x).data;
                     EquationToken[] yarr = ((BracketToken)y).data;
@@ -56,7 +70,7 @@ namespace Calculator
                 }
 
 
-                if (x is FunctionToken && y is FunctionToken)
+                else if (x is FunctionToken)
                 {
                     if (!((FunctionToken)x).name.Equals(((FunctionToken)y).name))
                         return false;
@@ -75,7 +89,7 @@ namespace Calculator
 
 
 
-                return false;
+                return true;
             }
         }
 
@@ -98,7 +112,7 @@ namespace Calculator
             public string varname;
             public override string ToString()
             {
-                return $"<Variable: {varname}>";
+                return $"<Var \"{varname}\": {GetVar(varname).ToString()}>";
             }
             public VariableToken(string varname)
             {
@@ -116,6 +130,7 @@ namespace Calculator
                 DIVIDE,
                 MOD,
                 POWER,
+                SET,
                 UNKNOWN
             }
 
@@ -133,6 +148,8 @@ namespace Calculator
                     return Operation.MOD;
                 else if (chr.Equals("**") || chr.Equals("^"))
                     return Operation.POWER;
+                else if (chr.Equals("->"))
+                    return Operation.SET;
 
 
 
