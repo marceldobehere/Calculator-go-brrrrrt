@@ -125,6 +125,14 @@ namespace Calculator
             }
         }
 
+        public class EmptyToken : EquationToken
+        {
+            public override string ToString()
+            {
+                return $"";
+            }
+        }
+
         public class VariableToken : EquationToken
         {
             public string varname;
