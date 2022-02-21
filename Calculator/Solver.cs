@@ -25,7 +25,7 @@ namespace Calculator
             FunctionOrVariable
         }
         private static string numchars = "0123456789.";
-        private static string opchars = "+-*/%^<>";
+        private static string opchars = "+-*/%^<>$";
         private static string infuncchars = "(),";
         private static string funcorvarchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         public static string Solve(string equation)
@@ -170,21 +170,21 @@ namespace Calculator
 
         private static EquationToken CalculateTokens(List<EquationToken> tokens)
         {
-            //{
-            //    string data = $"Calculating Tokens: ";
+            {
+                string data = $"Calculating Tokens: ";
 
-            //    foreach (EquationToken tok in tokens)
-            //        data += $"{tok.ToString()} ";
-
-
-            //    //MessageBox.Show(data);
-            //    AllocConsole();
-            //    Console.WriteLine(data + "\n");
-            //}
+                foreach (EquationToken tok in tokens)
+                    data += $"{tok.ToString()} ";
 
 
+                //MessageBox.Show(data);
+                AllocConsole();
+                Console.WriteLine(data + "\n");
+            }
 
-            tokens = new List<EquationToken>(tokens);
+
+
+            tokens = CloneTokenList(tokens);
 
             bool change = true;
 
@@ -231,7 +231,6 @@ namespace Calculator
                                         tokens[i] = CalculateTokens(((BracketToken)toksold[i]).data.ToList());
                                         continue;
                                     }
-
 
                                 }
 
@@ -311,7 +310,7 @@ namespace Calculator
 
                 change = false;
 
-                foreach (OperatorToken.Operation currentop in new OperatorToken.Operation[] { OperatorToken.Operation.SET})
+                foreach (OperatorToken.Operation currentop in new OperatorToken.Operation[] { OperatorToken.Operation.VAL, OperatorToken.Operation.SET})
                 {
 
                     for (int i = 0; i < tokens.Count; i++)
@@ -331,20 +330,32 @@ namespace Calculator
                                     {
                                         if (op == OperatorToken.Operation.SET)
                                         {
-                                            if (tokens[i + 1] is VariableToken)
+                                            if (tokens[i - 1] is NumberToken && tokens[i + 1] is VariableToken)
                                             {
                                                 SetVar(((VariableToken)tokens[i + 1]).varname, tokens[i - 1]);
                                                 tokens.RemoveRange(i - 1, 3);
                                                 i = 0;
                                                 change = true;
                                             }
+                                            else
+                                                return new ErrorToken("SET Operator received incorrect arguments");
+                                            
                                         }
                                     }
 
                                 }
                                 else if (i < tokens.Count - 1)
                                 {
-
+                                    if (op == OperatorToken.Operation.VAL)
+                                    {
+                                        if (tokens[i + 1] is BracketToken)
+                                            tokens[i + 1] = CalculateTokens(((BracketToken)tokens[i + 1]).data.ToList());
+                                        else
+                                            tokens[i + 1] = CalculateTokens(new List<EquationToken>() { tokens[i + 1] });
+                                        tokens.RemoveAt(i);
+                                        i = 0;
+                                        change = true;
+                                    }
 
                                 }
                             }
@@ -449,7 +460,18 @@ namespace Calculator
             }
 
 
+            //{
+            //    string data = $"Equals Tokens: ";
 
+            //    foreach (EquationToken tok in tokens)
+            //        data += $"{tok.ToString()} ";
+
+
+            //    //MessageBox.Show(data);
+            //    AllocConsole();
+            //    Console.WriteLine(data + "\n");
+            //    Console.WriteLine();
+            //}
 
 
             if (tokens.Count > 0)
@@ -462,7 +484,7 @@ namespace Calculator
                     return tokens[0];
             }
             else
-                return null;
+                return new EmptyToken();
         }
 
 
@@ -481,9 +503,9 @@ namespace Calculator
 
         private static List<EquationToken> CorrectTokens(List<EquationToken> tokens)
         {
-            tokens = new List<EquationToken>(tokens);
+            tokens = CloneTokenList(tokens);
             if (tokens.Count == 0)
-                return new List<EquationToken>() { new EquationToken() };
+                return new List<EquationToken>() { new EmptyToken() };
 
             //{
             //    string data = $"Correcting Tokens: ";

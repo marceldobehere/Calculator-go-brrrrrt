@@ -17,6 +17,20 @@ namespace Calculator
 
         private static EquationToken CallFunction(string name, EquationToken[] args)
         {
+
+            {
+                string data = $"Function  \"{name}\" called with args: ";
+
+                foreach (EquationToken tok in args)
+                    data += $"{tok.ToString()} ";
+
+
+                //MessageBox.Show(data);
+                AllocConsole();
+                Console.WriteLine(data + "\n");
+                Console.WriteLine();
+            }
+
             if (!FunctionArgs.ContainsKey(name))
                 return new ErrorToken($"Function \"{name}\" not found.");
             else
@@ -33,10 +47,10 @@ namespace Calculator
                         if ((args[i] is VariableToken) && (temp[i].Equals(typeof(NumberToken))))
                         {
                             args[i] = GetVar(((VariableToken)args[i]).varname);
+                            i = 0;
                         }
                         else
                             same = false;
-                        
                     }
 
                 if (!same)

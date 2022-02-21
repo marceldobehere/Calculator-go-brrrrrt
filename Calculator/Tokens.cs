@@ -6,11 +6,25 @@ namespace Calculator
 {
     public partial class Solver
     {
+        public static List<EquationToken> CloneTokenList(List<EquationToken> og)
+        {
+            List<EquationToken> newlist = new List<EquationToken>(og.Count);
+
+            foreach (EquationToken x in og)
+                newlist.Add(x.Clone());
+
+            return newlist;
+        }
+
         public class EquationToken
         {
             public override string ToString()
             {
-                return "";
+                return "<Default>";
+            }
+            public EquationToken Clone()
+            {
+                return (EquationToken)this.MemberwiseClone();
             }
             public override bool Equals(object obj)
             {
@@ -129,7 +143,7 @@ namespace Calculator
         {
             public override string ToString()
             {
-                return $"";
+                return "";
             }
         }
 
@@ -157,6 +171,7 @@ namespace Calculator
                 MOD,
                 POWER,
                 SET,
+                VAL,
                 UNKNOWN
             }
 
@@ -176,6 +191,8 @@ namespace Calculator
                     return Operation.POWER;
                 else if (chr.Equals("->"))
                     return Operation.SET;
+                else if (chr.Equals("$"))
+                    return Operation.VAL;
 
 
 

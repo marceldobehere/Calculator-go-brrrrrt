@@ -18,8 +18,6 @@ using System.Globalization;
 namespace Calculator
 {
     //TODO: 
-    // ADD Empty Token instead of null
-    // ADD Print to empty token
     // Implement Degree Radians Buttons
     // Implement Functions
     // Implement History
