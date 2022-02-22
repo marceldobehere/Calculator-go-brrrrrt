@@ -17,7 +17,8 @@ using System.Globalization;
 
 namespace Calculator
 {
-    //TODO: 
+    // TODO: 
+    // Implement freeze Handling
     // Implement Degree Radians Buttons
     // Implement Functions
     // Implement History
