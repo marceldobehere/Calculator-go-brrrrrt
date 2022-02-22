@@ -41,7 +41,10 @@ namespace Calculator
                     if (tempmode != TokenMode.Unknown)
                     {
                         if (tempmode == TokenMode.Number)
-                            tokens.Add(new NumberToken(double.Parse(tempstr)));
+                        {
+                            if (double.TryParse(tempstr, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture, out double temp1))
+                                tokens.Add(new NumberToken(temp1));
+                        }
                         else if (tempmode == TokenMode.FunctionOrVariable)
                             tokens.Add(new VariableorFunctionToken(tempstr));
                         else if (tempmode == TokenMode.InFunction)
@@ -205,82 +208,100 @@ namespace Calculator
                         if (tokens[i] is BracketToken)
                         {
                             EquationToken temp = CalculateTokens(((BracketToken)tokens[i]).data.ToList());
-                            if (temp == null && tokens[i] != null)
+
+                            //Console.WriteLine($"At {i} - Token 1: {tokens[i]}, Token 2:{temp}");
+
+                            if (!temp.Equals(tokens[i]))
                             {
                                 tokens[i] = temp;
                                 change = true;
+                                continue;
                             }
-                            else if (!temp.Equals(tokens[i]))
+                            else if (((BracketToken)temp).data.Length == 1)
                             {
-                                tokens[i] = temp;
-                                change = true;
+                                continue;
                             }
                             else
                             {
-                                List<EquationToken> toksold = tokens;
-                                tokens = new List<EquationToken>();
+                                bool opfound = false;
 
-                                {
-                                    bool found = false;
-                                    for (int i3 = 0; i3 < toksold.Count; i3++)
+                                foreach (EquationToken x in tokens)
+                                    if (x is OperatorToken)
                                     {
-                                        if (toksold[i3] is OperatorToken)
+                                        opfound = true;
+                                        break;
+                                    }    
+                                
+                                if (!opfound)
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    List<EquationToken> temptoks = CloneTokenList(tokens);
+                                    List<EquationToken> oldtoks = CloneTokenList(tokens);
+                                    tokens = new List<EquationToken>();
+
+
+                                    EquationToken[] arrtoksog = ((BracketToken)temp).data;
+
+                                    EquationToken[] arrtoks = new EquationToken[arrtoksog.Length];
+
+                                    for (int i2 = 0; i2 < arrtoks.Length; i2++)
+                                    {
+                                        temptoks[i] = arrtoksog[i2];
+
+                                        arrtoks[i2] = CalculateTokens(temptoks);
+                                    }
+
+                                    //{
+                                    //    string data = $"Finished Tokens: ";
+
+                                    //    foreach (EquationToken tok in arrtoks)
+                                    //        data += $"{tok.ToString()} ";
+
+                                    //    Console.WriteLine(data + "\n");
+                                    //}
+
+                                    if (arrtoks.Length > 1)
+                                        tokens.Add(new BracketToken(arrtoks));
+                                    else
+                                        tokens.Add(arrtoks[0]);
+
+                                    if (oldtoks.Count != tokens.Count)
+                                    {
+                                        change = true;
+                                        continue;
+                                    }
+
+                                    //{
+                                    //    string data = $"Calculating Tokens (1): ";
+
+                                    //    foreach (EquationToken tok in tokens)
+                                    //        data += $"{tok.ToString()} ";
+
+                                    //    Console.WriteLine(data + "\n");
+                                    //}
+
+                                    //{
+                                    //    string data = $"Calculating Tokens (2): ";
+
+                                    //    foreach (EquationToken tok in oldtoks)
+                                    //        data += $"{tok.ToString()} ";
+
+                                    //    Console.WriteLine(data + "\n");
+                                    //}
+
+                                    for (int i2 = 0; i2 < tokens.Count; i2++)
+                                    {
+                                        if (!tokens[i2].Equals(oldtoks[i2]))
                                         {
-                                            found = true;
-                                            break;
+                                            change = true;
+                                            continue;
                                         }
                                     }
 
-                                    if (!found)
-                                    {
-                                        tokens = toksold;
-                                        tokens[i] = CalculateTokens(((BracketToken)toksold[i]).data.ToList());
-                                        continue;
-                                    }
-
-                                }
-
-
-                                EquationToken temptok = CalculateTokens(((BracketToken)toksold[i]).data.ToList());
-                                EquationToken[] arrtoksog;
-                                if (temptok is BracketToken)
-                                    arrtoksog = ((BracketToken)temptok).data;
-                                else
-                                    arrtoksog = new EquationToken[1] { temptok };
-
-
-
-
-                                EquationToken[] arrtoks = new EquationToken[arrtoksog.Length];
-
-                                for (int i2 = 0; i2 < arrtoks.Length; i2++)
-                                {
-                                    toksold[i] = arrtoksog[i2];
-
-                                    arrtoks[i2] = CalculateTokens(toksold);
-                                }
-
-                                if (arrtoks.Length > 1)
-                                    tokens.Add(new BracketToken(arrtoks));
-                                else
-                                    tokens.Add(arrtoks[0]);
-
-
-                                if (toksold.Count != tokens.Count)
-                                {
-                                    change = true;
-                                    //i = -1;
-                                    continue;
-                                }
-
-                                for (int i2 = 0; i2 < tokens.Count; i2++)
-                                {
-                                    if (!tokens[i2].Equals(toksold[i2]))
-                                    {
-                                        change = true;
-                                        //i = -1;
-                                        continue;
-                                    }
+                                    //Console.WriteLine($"Bruh: {change} {i}");
                                 }
                             }
 
@@ -300,6 +321,7 @@ namespace Calculator
                             {
                                 tokens[i] = temp;
                                 change = true;
+                                continue;
                             }
                         }
                         //else if (tokens[i] is VariableToken)
@@ -340,8 +362,9 @@ namespace Calculator
                                             {
                                                 SetVar(((VariableToken)tokens[i + 1]).varname, tokens[i - 1]);
                                                 tokens.RemoveRange(i - 1, 3);
-                                                i = 0;
+                                                i = -1;
                                                 change = true;
+                                                continue;
                                             }
                                             else
                                                 return new ErrorToken("SET Operator received incorrect arguments");
@@ -363,8 +386,9 @@ namespace Calculator
                                             tokens[i + 1] = GetVar(((VariableToken)tokens[i + 1]).varname);
 
                                         tokens.RemoveAt(i);
-                                        i = 0;
+                                        i = -1;
                                         change = true;
+                                        continue;
                                     }
 
                                 }
@@ -396,43 +420,49 @@ namespace Calculator
                                         {
                                             tokens[i - 1] = new NumberToken(((NumberToken)tokens[i - 1]).value + ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
+                                            continue;
                                         }
                                         if (op == OperatorToken.Operation.MINUS)
                                         {
                                             tokens[i - 1] = new NumberToken(((NumberToken)tokens[i - 1]).value - ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
+                                            continue;
                                         }
                                         if (op == OperatorToken.Operation.MULTIPLY)
                                         {
                                             tokens[i - 1] = new NumberToken(((NumberToken)tokens[i - 1]).value * ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
+                                            continue;
                                         }
                                         if (op == OperatorToken.Operation.POWER)
                                         {
                                             tokens[i - 1] = new NumberToken(Math.Pow(((NumberToken)tokens[i - 1]).value, ((NumberToken)tokens[i + 1]).value));
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
+                                            continue;
                                         }
                                         if (op == OperatorToken.Operation.DIVIDE)
                                         {
                                             tokens[i - 1] = new NumberToken(((NumberToken)tokens[i - 1]).value / ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
+                                            continue;
                                         }
                                         if (op == OperatorToken.Operation.MOD)
                                         {
                                             tokens[i - 1] = new NumberToken(((NumberToken)tokens[i - 1]).value % ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
+                                            continue;
                                         }
                                     }
                                     else
@@ -443,8 +473,9 @@ namespace Calculator
                                             {
                                                 SetVar(((VariableToken)tokens[i + 1]).varname, tokens[i - 1]);
                                                 tokens.RemoveRange(i - 1, 3);
-                                                i = 0;
+                                                i = -1;
                                                 change = true;
+                                                continue;
                                             }
                                         }
                                     }
@@ -458,8 +489,9 @@ namespace Calculator
                                         {
                                             tokens[i + 1] = new NumberToken(0 - ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveAt(i);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
+                                            continue;
                                         }
                                     }
                                 }
