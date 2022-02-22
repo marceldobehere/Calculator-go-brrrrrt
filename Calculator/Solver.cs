@@ -4,16 +4,19 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows;
 
 namespace Calculator
 {
     public partial class Solver
     {
-
+        public static List<EquationToken> results;
         public static void Init()
         {
             variables = new Dictionary<string, EquationToken>();
+            results = new List<EquationToken>() { new EmptyToken() };
             InitFunctionArgs();
+            ClearVars();
         }
 
         enum TokenMode
@@ -28,7 +31,7 @@ namespace Calculator
         private static string opchars = "+-*/%^<>$";
         private static string infuncchars = "(),";
         private static string funcorvarchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        public static string Solve(string equation)
+        public static EquationToken Solve(string equation)
         {
             List<EquationToken> tokens = new List<EquationToken>();
             string tempstr = "";
@@ -165,17 +168,31 @@ namespace Calculator
             //        data += $"{tok.ToString()} ";
             //}
 
-            {
-                EquationToken tok = CalculateTokens(tokens);
-
-                if (tok != null)
-                    return tok.ToString();
-                return "";
-            }
+            calccounter = 0;
+            return CalculateTokens(tokens);
+            
         }
+        private static int calccounter = 0;
 
         private static EquationToken CalculateTokens(List<EquationToken> tokens)
         {
+            if (calccounter != -999)
+            {
+                if (calccounter == -1000)
+                    return new ErrorToken("OP Cancelled!");
+                calccounter++;
+
+                if (calccounter > 10000)
+                {
+                    MessageBoxResult tempres = MessageBox.Show($"Bro you are doing some intense calculations.\nWanna Cancel that?", "CALCULATION 2000", MessageBoxButton.YesNoCancel);
+                    if (tempres.Equals(MessageBoxResult.Yes))
+                        calccounter = -1000;
+                    else if (tempres.Equals(MessageBoxResult.No))
+                        calccounter = -999;
+                    else
+                        calccounter = 0;
+                }
+            }
             //{
             //    string data = $"Calculating Tokens: ";
 
@@ -196,10 +213,72 @@ namespace Calculator
 
             while (change)
             {
+                change = false;
+                foreach (OperatorToken.Operation currentop in new OperatorToken.Operation[] { OperatorToken.Operation.VAL, OperatorToken.Operation.SET })
+                {
+
+                    for (int i = 0; i < tokens.Count; i++)
+                    {
+                        if (tokens[i] is OperatorToken)
+                        {
+                            OperatorToken.Operation op = ((OperatorToken)tokens[i]).op;
+                            if (op == currentop)
+                            {
+                                if (i > 0 && i < tokens.Count - 1)
+                                {
+                                    if (tokens[i - 1] is NumberToken && tokens[i + 1] is NumberToken)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        if (op == OperatorToken.Operation.SET)
+                                        {
+                                            if (tokens[i + 1] is VariableToken)
+                                            {
+                                                SetVar(((VariableToken)tokens[i + 1]).varname, tokens[i - 1]);
+                                                tokens.RemoveRange(i - 1, 3);
+                                                i = -1;
+                                                change = true;
+                                            }
+                                            else
+                                                return new ErrorToken("SET Operator received incorrect arguments");
+
+                                        }
+                                    }
+
+                                }
+                                else if (i < tokens.Count - 1)
+                                {
+                                    if (op == OperatorToken.Operation.VAL)
+                                    {
+                                        if (tokens[i + 1] is BracketToken)
+                                            tokens[i + 1] = CalculateTokens(((BracketToken)tokens[i + 1]).data.ToList());
+                                        else
+                                            tokens[i + 1] = CalculateTokens(new List<EquationToken>() { tokens[i + 1] });
+
+                                        if (tokens[i + 1] is VariableToken)
+                                            tokens[i + 1] = GetVar(((VariableToken)tokens[i + 1]).varname);
+
+                                        tokens.RemoveAt(i);
+                                        i = -1;
+                                        change = true;
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (change)
+                    continue;
+
                 change = true;
                 while (change)
                 {
                     change = false;
+
                     for (int i = 0; i < tokens.Count; i++)
                     {
                         if (tokens[i] is BracketToken)
@@ -316,63 +395,6 @@ namespace Calculator
 
                 change = false;
 
-                foreach (OperatorToken.Operation currentop in new OperatorToken.Operation[] { OperatorToken.Operation.VAL, OperatorToken.Operation.SET })
-                {
-
-                    for (int i = 0; i < tokens.Count; i++)
-                    {
-                        if (tokens[i] is OperatorToken)
-                        {
-                            OperatorToken.Operation op = ((OperatorToken)tokens[i]).op;
-                            if (op == currentop)
-                            {
-                                if (i > 0 && i < tokens.Count - 1)
-                                {
-                                    if (tokens[i - 1] is NumberToken && tokens[i + 1] is NumberToken)
-                                    {
-
-                                    }
-                                    else
-                                    {
-                                        if (op == OperatorToken.Operation.SET)
-                                        {
-                                            if (tokens[i - 1] is NumberToken && tokens[i + 1] is VariableToken)
-                                            {
-                                                SetVar(((VariableToken)tokens[i + 1]).varname, tokens[i - 1]);
-                                                tokens.RemoveRange(i - 1, 3);
-                                                i = 0;
-                                                change = true;
-                                            }
-                                            else
-                                                return new ErrorToken("SET Operator received incorrect arguments");
-
-                                        }
-                                    }
-
-                                }
-                                else if (i < tokens.Count - 1)
-                                {
-                                    if (op == OperatorToken.Operation.VAL)
-                                    {
-                                        if (tokens[i + 1] is BracketToken)
-                                            tokens[i + 1] = CalculateTokens(((BracketToken)tokens[i + 1]).data.ToList());
-                                        else
-                                            tokens[i + 1] = CalculateTokens(new List<EquationToken>() { tokens[i + 1] });
-
-                                        if (tokens[i + 1] is VariableToken)
-                                            tokens[i + 1] = GetVar(((VariableToken)tokens[i + 1]).varname);
-
-                                        tokens.RemoveAt(i);
-                                        i = 0;
-                                        change = true;
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-                }
-
                 foreach (OperatorToken.Operation currentop in new OperatorToken.Operation[] { OperatorToken.Operation.MOD, OperatorToken.Operation.POWER, OperatorToken.Operation.MULTIPLY, OperatorToken.Operation.DIVIDE, OperatorToken.Operation.PLUS, OperatorToken.Operation.MINUS })
                 {
 
@@ -396,42 +418,42 @@ namespace Calculator
                                         {
                                             tokens[i - 1] = new NumberToken(((NumberToken)tokens[i - 1]).value + ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
                                         }
                                         if (op == OperatorToken.Operation.MINUS)
                                         {
                                             tokens[i - 1] = new NumberToken(((NumberToken)tokens[i - 1]).value - ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
                                         }
                                         if (op == OperatorToken.Operation.MULTIPLY)
                                         {
                                             tokens[i - 1] = new NumberToken(((NumberToken)tokens[i - 1]).value * ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
                                         }
                                         if (op == OperatorToken.Operation.POWER)
                                         {
                                             tokens[i - 1] = new NumberToken(Math.Pow(((NumberToken)tokens[i - 1]).value, ((NumberToken)tokens[i + 1]).value));
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
                                         }
                                         if (op == OperatorToken.Operation.DIVIDE)
                                         {
                                             tokens[i - 1] = new NumberToken(((NumberToken)tokens[i - 1]).value / ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
                                         }
                                         if (op == OperatorToken.Operation.MOD)
                                         {
                                             tokens[i - 1] = new NumberToken(((NumberToken)tokens[i - 1]).value % ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveRange(i, 2);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
                                         }
                                     }
@@ -443,7 +465,7 @@ namespace Calculator
                                             {
                                                 SetVar(((VariableToken)tokens[i + 1]).varname, tokens[i - 1]);
                                                 tokens.RemoveRange(i - 1, 3);
-                                                i = 0;
+                                                i = -1;
                                                 change = true;
                                             }
                                         }
@@ -458,7 +480,7 @@ namespace Calculator
                                         {
                                             tokens[i + 1] = new NumberToken(0 - ((NumberToken)tokens[i + 1]).value);
                                             tokens.RemoveAt(i);
-                                            i = 0;
+                                            i = -1;
                                             change = true;
                                         }
                                     }
@@ -482,6 +504,13 @@ namespace Calculator
             //    Console.WriteLine(data + "\n");
             //    Console.WriteLine();
             //}
+
+
+            //for (int i = 0; i < tokens.Count; i++)
+            //    if (tokens[i] is VariableToken)
+            //        tokens[i] = GetVar(((VariableToken)tokens[i]).varname);
+                
+            
 
 
             if (tokens.Count > 0)

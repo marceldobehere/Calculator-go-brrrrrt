@@ -151,9 +151,29 @@ namespace Calculator
         public class VariableToken : EquationToken
         {
             public string varname;
+            public static int maxcounter = 0;
             public override string ToString()
             {
-                return $"<Var \"{varname}\": {GetVar(varname).ToString()}>";
+                if (maxcounter > 20)
+                    return $"TOO MANY OBJECTS TO DISPLAY";
+                
+                maxcounter++;
+                string temp = ToString(this, 0);
+                maxcounter--;
+                return temp;
+            }
+            public static string ToString(VariableToken tok, int counter)
+            {
+                if (counter > 20)
+                    return $"TOO MANY OBJECTS TO DISPLAY";
+
+                
+
+                EquationToken temp = GetVar(tok.varname);
+                if (temp is VariableToken)
+                    return $"<Var \"{tok.varname}\": {VariableToken.ToString(((VariableToken)temp), counter + 1)}>";
+
+                return $"<Var \"{tok.varname}\": {temp.ToString()}>";
             }
             public VariableToken(string varname)
             {
@@ -300,30 +320,56 @@ namespace Calculator
             {
                 this.data = args;
             }
+
+            public static int maxcounter = 0;
             public override string ToString()
             {
-                //string aaa = $"<Array: ";
+                if (maxcounter > 10)
+                    return $"TOO MANY OBJECTS TO DISPLAY";
 
-                //for (int i = 0; i < data.Length - 1; i++)
-                //    aaa += $"{data[i].ToString()}, ";
-                //if (data.Length > 0)
-                //    aaa += $"{data[data.Length - 1].ToString()}";
+                maxcounter++;
+                string temp = ToString(this, 0);
+                maxcounter--;
+                return temp;
+            }
+            public static string ToString(BracketToken tok, int counter)
+            {
+                if (counter > 10)
+                    return $"TOO MANY OBJECTS TO DISPLAY";
 
-                //aaa += ">";
 
                 string aaa = $"(";
 
-                for (int i = 0; i < data.Length - 1; i++)
-                    aaa += $"{data[i].ToString()}, ";
-                if (data.Length > 0)
-                    aaa += $"{data[data.Length - 1].ToString()}";
+                for (int i = 0; i < tok.data.Length - 1; i++)
+                    if (tok.data[i] is BracketToken)
+                        aaa += $"{ToString((BracketToken)tok.data[i], counter+1)}, "; 
+                    else
+                        aaa += $"{tok.data[i].ToString()}, ";
+
+
+                if (tok.data.Length > 0)
+                {
+                    if (tok.data[tok.data.Length - 1] is BracketToken)
+                        aaa += $"{ToString((BracketToken)tok.data[tok.data.Length - 1], counter + 1)}";
+                    else
+                        aaa += $"{tok.data[tok.data.Length - 1].ToString()}";
+                }
 
                 aaa += ")";
 
 
 
                 return aaa;
+
+
+
+                //EquationToken temp = GetVar(tok.varname);
+                //if (temp is VariableToken)
+                //    return $"<Var \"{tok.varname}\": {VariableToken.ToString(((VariableToken)temp), counter + 1)}>";
+
+                //return $"<Var \"{tok.varname}\": {temp.ToString()}>";
             }
+
         }
 
     }

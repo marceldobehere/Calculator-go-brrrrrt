@@ -289,6 +289,7 @@ namespace Calculator
             {
                 Input = "";
                 Result = "";
+                Solver.Init();
             }
             else if (tempdata.Equals("<"))
             {
@@ -324,7 +325,9 @@ namespace Calculator
 
         private void SolveCurrent()
         {
-            Result = Solver.Solve(Input);
+            Solver.EquationToken temp = Solver.Solve(Input);
+            Solver.results.Add(temp);
+            Result = temp.ToString();
         }
 
 
