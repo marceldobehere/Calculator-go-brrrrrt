@@ -17,6 +17,7 @@ namespace Calculator
             return newlist;
         }
 
+
         public class EquationToken
         {
             public override string ToString()

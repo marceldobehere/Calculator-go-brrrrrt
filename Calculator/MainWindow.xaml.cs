@@ -14,20 +14,22 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace Calculator
 {
     // TODO: 
-    // Implement freeze Handling
-    // Implement Degree Radians Buttons
     // Implement Functions
+    // Implement File Reading/Calculating and Saving to File
     // Implement History
+    // Implement Session Saving
+    // Add Wolfram alpha API support
     // Implement Customizability
-
 
     
     public partial class MainWindow : Window
     {
+
         string __input;
         public string Input
         {
@@ -84,6 +86,30 @@ namespace Calculator
         }
 
 
+        private bool deg = false;
+        public bool Deg
+        {
+            get
+            {
+                return deg;
+            }
+            set
+            {
+                deg = value;
+                if (value)
+                {
+                    Button_deg_rad.Content = "DEG";
+                    Solver.multiplier = Math.PI / 180.0;
+                }
+                else
+                {
+                    Button_deg_rad.Content = "RAD";
+                    Solver.multiplier = 1;
+                }
+            }
+        }
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -91,8 +117,15 @@ namespace Calculator
             Solver.Init();
             Input = "";
             Result = "";
+            Deg = true;
             TextVSKeyboard = true;
             this.InputBindings.Add(new InputBinding(TestCmd, new KeyGesture(Key.V, ModifierKeys.Alt)));
+
+
+#if DEBUG
+            if (!Solver.Solve("(1+2)*3+200").ToString().Equals("209"))
+                MessageBox.Show("Bruh moment");
+#endif
         }
 
 
@@ -174,7 +207,11 @@ namespace Calculator
                 Solver.ClearVars();
                 Result = "Cleared Variables";
             }
-            //Button_del_var
+            else if (name.Equals("Button_deg_rad"))
+            {
+                Deg = !Deg;
+            }
+            //Button_deg_rad
 
         }
 
@@ -265,7 +302,7 @@ namespace Calculator
             }
 
 
-
+            
 
             //if (e.Key == Key.Subtract)
             //{

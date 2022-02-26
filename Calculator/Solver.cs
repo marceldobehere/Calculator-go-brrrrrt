@@ -11,10 +11,13 @@ namespace Calculator
     public partial class Solver
     {
         public static List<EquationToken> results;
+        public static double multiplier = 1;
         public static void Init()
         {
             variables = new Dictionary<string, EquationToken>();
+            InitConsts();
             results = new List<EquationToken>() { new EmptyToken() };
+            multiplier = 1;
             InitFunctionArgs();
             ClearVars();
         }
@@ -88,7 +91,6 @@ namespace Calculator
                         tempmode = TokenMode.Unknown;
                         i--;
                     }
-
                 }
                 if (tempmode != TokenMode.Unknown)
                 {

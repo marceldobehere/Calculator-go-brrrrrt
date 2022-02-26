@@ -7,6 +7,7 @@ namespace Calculator
     public partial class Solver
     {
         private static Dictionary<string, EquationToken> variables;
+        private static Dictionary<string, EquationToken> constants;
 
         public static void ClearVars()
         {
@@ -14,8 +15,19 @@ namespace Calculator
             variables.Add("", new EmptyToken());
         }
 
+        public static void InitConsts()
+        {
+            constants = new Dictionary<string, EquationToken>()
+            {
+                {"PI", new NumberToken(Math.PI) },
+            };
+        }
+
         public static void SetVar(string varname, EquationToken val)
         {
+            if (constants.ContainsKey(varname))
+                return;
+
             if (!variables.ContainsKey(varname))
                 variables.Add(varname, val);
             else
@@ -33,6 +45,9 @@ namespace Calculator
                         return new ErrorToken("Self reference");
                 return CalculateTokens(new List<EquationToken>() { results[results.Count - 1] });
             }
+
+            if (constants.ContainsKey(varname))
+                return constants[varname];
 
             if (!variables.ContainsKey(varname))
                 return new NumberToken(0);
