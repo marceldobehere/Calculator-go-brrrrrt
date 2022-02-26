@@ -33,7 +33,7 @@ namespace Calculator
         private static string numchars = "0123456789.";
         private static string opchars = "+-*/%^<>$";
         private static string infuncchars = "(),";
-        private static string funcorvarchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private static string funcorvarchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
         public static EquationToken Solve(string equation)
         {
             try

@@ -12,12 +12,13 @@ namespace Calculator
         {
             FunctionArgs = new Dictionary<string, Type[]>();
             FunctionArgs.Add("pow", new Type[] { typeof(NumberToken), typeof(NumberToken) });
-            FunctionArgs.Add("sin", new Type[] { typeof(NumberToken) });
-            FunctionArgs.Add("cos", new Type[] { typeof(NumberToken) });
-            FunctionArgs.Add("tan", new Type[] { typeof(NumberToken) });
-            FunctionArgs.Add("asin", new Type[] { typeof(NumberToken) });
-            FunctionArgs.Add("acos", new Type[] { typeof(NumberToken) });
-            FunctionArgs.Add("atan", new Type[] { typeof(NumberToken) });
+
+            foreach (string aaa in new string[] {"sin", "cos", "tan", "log_two", "asin", "acos", "atan", "abs", "acosh", "atanh", "cbrt", "ceiling", "cosh", "exp", "floor", "log", "log_ten", "round", "sign", "sinh", "sqrt", "tanh"})
+                FunctionArgs.Add(aaa, new Type[] { typeof(NumberToken) });
+
+            // max min
+            FunctionArgs.Add("max", new Type[] { typeof(NumberToken), typeof(NumberToken) });
+            FunctionArgs.Add("min", new Type[] { typeof(NumberToken), typeof(NumberToken) });
         }
 
 
@@ -64,18 +65,43 @@ namespace Calculator
             }
 
 
+
+            // { "round", "sign", "sinh", "sqrt", "tanh"}
+            // max, min
             EquationToken tempToken = name switch
             {
-                "pow" => new NumberToken(Math.Pow(((NumberToken)args[0]).value, ((NumberToken)args[1]).value)),
-                "sin" => new NumberToken(Math.Sin((((NumberToken)args[0]).value) * multiplier)),
-                "cos" => new NumberToken(Math.Cos((((NumberToken)args[0]).value) * multiplier)),
-                "tan" => new NumberToken(Math.Tan((((NumberToken)args[0]).value) * multiplier)),
-                "asin" => new NumberToken(Math.Asin(((NumberToken)args[0]).value) / multiplier),
-                "acos" => new NumberToken(Math.Acos(((NumberToken)args[0]).value) / multiplier),
-                "atan" => new NumberToken(Math.Atan(((NumberToken)args[0]).value) / multiplier),
+                "pow"      => new NumberToken(Math.Pow(((NumberToken)args[0]).value, ((NumberToken)args[1]).value)),
+                "sin"      => new NumberToken(Math.Sin((((NumberToken)args[0]).value) * multiplier)),
+                "cos"      => new NumberToken(Math.Cos((((NumberToken)args[0]).value) * multiplier)),
+                "tan"      => new NumberToken(Math.Tan((((NumberToken)args[0]).value) * multiplier)),
+                "asin"     => new NumberToken(Math.Asin(((NumberToken)args[0]).value) / multiplier),
+                "acos"     => new NumberToken(Math.Acos(((NumberToken)args[0]).value) / multiplier),
+                "atan"     => new NumberToken(Math.Atan(((NumberToken)args[0]).value) / multiplier),
+
+                "sinh"     => new NumberToken(Math.Sinh((((NumberToken)args[0]).value) * multiplier)),
+                "cosh"     => new NumberToken(Math.Cosh((((NumberToken)args[0]).value) * multiplier)),
+                "tanh"     => new NumberToken(Math.Tanh((((NumberToken)args[0]).value) * multiplier)),
+                "asinh"    => new NumberToken(Math.Asinh(((NumberToken)args[0]).value) / multiplier),
+                "acosh"    => new NumberToken(Math.Acosh(((NumberToken)args[0]).value) / multiplier),
+                "atanh"    => new NumberToken(Math.Atanh(((NumberToken)args[0]).value) / multiplier),
+
+                "abs"      => new NumberToken(Math.Abs(((NumberToken)args[0]).value)),
+                "cbrt"     => new NumberToken(Math.Cbrt(((NumberToken)args[0]).value)),
+
+                "ceiling"  => new NumberToken(Math.Ceiling(((NumberToken)args[0]).value)),
+                "floor"    => new NumberToken(Math.Floor(((NumberToken)args[0]).value)),
+                "exp"      => new NumberToken(Math.Exp(((NumberToken)args[0]).value)),
+
+                "log"      => new NumberToken(Math.Log(((NumberToken)args[0]).value)),
+                "log_ten"  => new NumberToken(Math.Log10(((NumberToken)args[0]).value)),
+                "log_two"  => new NumberToken(Math.Log2(((NumberToken)args[0]).value)),
+
+                "round"    => new NumberToken(Math.Round(((NumberToken)args[0]).value)),
+                "sign"     => new NumberToken(Math.Sign(((NumberToken)args[0]).value)),
+                "sqrt"     => new NumberToken(Math.Sqrt(((NumberToken)args[0]).value)),
 
 
-                _ => new EmptyToken()
+                _          => new EmptyToken()
             };
             if (!(tempToken is EmptyToken))
                 return tempToken;

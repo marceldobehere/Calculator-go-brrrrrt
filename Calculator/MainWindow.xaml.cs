@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -15,18 +15,19 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Globalization;
 using System.Diagnostics;
+using System.IO;
+using Path = System.IO.Path;
 
 namespace Calculator
 {
     // TODO: 
-    // Implement Functions
-    // Implement File Reading/Calculating and Saving to File
+    // Potentially add indexing
     // Implement History
     // Implement Session Saving
-    // Add Wolfram alpha API support
     // Implement Customizability
+    // Add Wolfram alpha API support
 
-    
+
     public partial class MainWindow : Window
     {
 
@@ -121,7 +122,24 @@ namespace Calculator
             TextVSKeyboard = true;
             this.InputBindings.Add(new InputBinding(TestCmd, new KeyGesture(Key.V, ModifierKeys.Alt)));
 
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Length > 1)
+            {
 
+                string newname = $"{Directory.GetParent(args[1])}\\{Path.GetFileNameWithoutExtension(args[1])} - CALCULATED{Path.GetExtension(args[1])}";
+                //MessageBox.Show($"AA:\n{args[1]}\nAB:\n{newname}");
+
+
+                StreamReader reader = new StreamReader(args[1]);
+                StreamWriter writer = new StreamWriter(newname);
+
+                while(!reader.EndOfStream)
+                    writer.WriteLine(Solver.Solve(reader.ReadLine()).ToString());
+
+                reader.Close();
+                writer.Close();
+                Close();
+            }
         }
 
 

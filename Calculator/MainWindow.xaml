@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
-        Title="Masls super krasser Rechner" Height="700" Width="900" AllowsTransparency="True" WindowStyle="None" BorderThickness="2,10,5,2" MinWidth="800" MinHeight="500" MaxWidth="2000" MaxHeight="1000" Padding="0,0,0,49" Margin="0,0,0,0">
+        Title="Masls super krasser Rechner" Height="700" Width="900" AllowsTransparency="True" WindowStyle="None" BorderThickness="2,10,5,2" MinWidth="800" MinHeight="500" MaxWidth="2000" MaxHeight="1000" Padding="0,0,0,49" Margin="0,0,0,0"
+        >
     <Window.Background>
         <SolidColorBrush Color="#FF071B47" Opacity="0.7"/>
     </Window.Background>
