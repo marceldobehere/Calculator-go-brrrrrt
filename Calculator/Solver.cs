@@ -28,7 +28,8 @@ namespace Calculator
             Number,
             Operator,
             InFunction,
-            FunctionOrVariable
+            FunctionOrVariable,
+            Empty
         }
         private static string numchars = "0123456789.";
         private static string opchars = "+-*/%^<>$";
@@ -56,6 +57,8 @@ namespace Calculator
                                 tokens.Add(new FunctionSplitterToken(FunctionSplitterToken.GetFunctionSplitterTypeFromStr(tempstr)));
                             else if (tempmode == TokenMode.Operator)
                                 tokens.Add(new OperatorToken(OperatorToken.GetOperationFromStr(tempstr)));
+                            else if (tempmode == TokenMode.Empty)
+                                tokens.Add(new EmptyToken());
 
                             tempstr = "";
                             tempmode = TokenMode.Unknown;
@@ -86,6 +89,8 @@ namespace Calculator
                             tokens.Add(new FunctionSplitterToken(FunctionSplitterToken.GetFunctionSplitterTypeFromStr(tempstr)));
                         else if (tempmode == TokenMode.Operator)
                             tokens.Add(new OperatorToken(OperatorToken.GetOperationFromStr(tempstr)));
+                        else if (tempmode == TokenMode.Empty)
+                            tokens.Add(new EmptyToken());
 
                         tempstr = "";
                         tempmode = TokenMode.Unknown;
@@ -105,6 +110,8 @@ namespace Calculator
                         tokens.Add(new FunctionSplitterToken(FunctionSplitterToken.GetFunctionSplitterTypeFromStr(tempstr)));
                     else if (tempmode == TokenMode.Operator)
                         tokens.Add(new OperatorToken(OperatorToken.GetOperationFromStr(tempstr)));
+                    else if (tempmode == TokenMode.Empty)
+                        tokens.Add(new EmptyToken());
 
                     tempstr = "";
                     tempmode = TokenMode.Unknown;
@@ -627,6 +634,15 @@ namespace Calculator
 
                         tokens.RemoveRange(i + 1, endi - i);
 
+                        foreach (List<EquationToken> bbb in toks)
+                            for (int aaa = 0; aaa < bbb.Count; aaa++)
+                                if (bbb[aaa] is EmptyToken)
+                                {
+                                    bbb.RemoveAt(aaa);
+                                    aaa--;
+                                }
+                        
+
 
                         List<EquationToken> toks2 = new List<EquationToken>();
                         for (int i2 = 0; i2 < toks.Count; i2++)
@@ -649,6 +665,14 @@ namespace Calculator
                     }
                 }
             }
+
+            for (int aaa = 0; aaa < tokens.Count; aaa++)
+                if (tokens[aaa] is EmptyToken)
+                {
+                    tokens.RemoveAt(aaa);
+                    aaa--;
+                }
+
             for (int i = 0; i < tokens.Count; i++)
             {
                 if (tokens[i] is VariableorFunctionToken)
@@ -757,6 +781,8 @@ namespace Calculator
                 return TokenMode.FunctionOrVariable;
             else if (infuncchars.Contains(val))
                 return TokenMode.InFunction;
+            else if (val == ' ')
+                return TokenMode.Empty;
             else
                 return TokenMode.Unknown;
         }

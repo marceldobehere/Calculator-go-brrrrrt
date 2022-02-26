@@ -19,11 +19,14 @@ namespace Calculator
             // max min
             FunctionArgs.Add("max", new Type[] { typeof(NumberToken), typeof(NumberToken) });
             FunctionArgs.Add("min", new Type[] { typeof(NumberToken), typeof(NumberToken) });
+
+            FunctionArgs.Add("get", new Type[] { typeof(BracketToken), typeof(NumberToken) });
         }
 
 
         private static EquationToken CallFunction(string name, EquationToken[] args)
         {
+            args = (EquationToken[])args.Clone();
             name = name.ToLower();
             //{
             //    string data = $"Function  \"{name}\" called with args: ";
@@ -54,7 +57,7 @@ namespace Calculator
                         if ((args[i] is VariableToken) && (temp[i].Equals(typeof(NumberToken))))
                         {
                             args[i] = GetVar(((VariableToken)args[i]).varname);
-                            i = 0;
+                            i = -1;
                         }
                         else
                             same = false;
@@ -108,10 +111,19 @@ namespace Calculator
 
 
 
-            
+
 
             if (name.Equals("pow"))
                 return new NumberToken(Math.Pow(((NumberToken)args[0]).value, ((NumberToken)args[1]).value));
+
+            if (name.Equals("get"))
+            {
+                int index = (int)((NumberToken)args[1]).value;
+                if (index >= 0 && index < ((BracketToken)args[0]).data.Length)
+                    return ((BracketToken)args[0]).data[index];
+                else
+                    return new ErrorToken($"Index {index} is out of bounds.");
+            }
 
 
 

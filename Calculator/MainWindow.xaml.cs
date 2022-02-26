@@ -21,7 +21,6 @@ using Path = System.IO.Path;
 namespace Calculator
 {
     // TODO: 
-    // Potentially add indexing
     // Implement History
     // Implement Session Saving
     // Implement Customizability
