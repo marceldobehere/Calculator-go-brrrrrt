@@ -122,10 +122,6 @@ namespace Calculator
             this.InputBindings.Add(new InputBinding(TestCmd, new KeyGesture(Key.V, ModifierKeys.Alt)));
 
 
-#if DEBUG
-            if (!Solver.Solve("(1+2)*3+200").ToString().Equals("209"))
-                MessageBox.Show("Bruh moment");
-#endif
         }
 
 
