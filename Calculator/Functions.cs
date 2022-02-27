@@ -21,6 +21,7 @@ namespace Calculator
             FunctionArgs.Add("min", new Type[] { typeof(NumberToken), typeof(NumberToken) });
 
             FunctionArgs.Add("get", new Type[] { typeof(BracketToken), typeof(NumberToken) });
+            FunctionArgs.Add("set", new Type[] { typeof(BracketToken), typeof(NumberToken), typeof(EquationToken) });
         }
 
 
@@ -48,11 +49,11 @@ namespace Calculator
                 Type[] temp = FunctionArgs[name];
 
                 if (args.Length != temp.Length)
-                    return new ErrorToken($"Function Arguments for \"{name}\" don't match.");
+                    return new ErrorToken($"Function Arguments for \"{name}\" don't match (Length different).");
 
-                bool same = true;
+                List<int> diffindexes = new List<int>();
                 for (int i = 0; i < temp.Length; i++)
-                    if (!(args[i].GetType().Equals(temp[i])))
+                    if (!(args[i].GetType().Equals(temp[i])) && !(temp[i].Equals(typeof(EquationToken))))
                     {
                         if ((args[i] is VariableToken) && (temp[i].Equals(typeof(NumberToken))))
                         {
@@ -60,11 +61,22 @@ namespace Calculator
                             i = -1;
                         }
                         else
-                            same = false;
+                            diffindexes.Add(i);
                     }
 
-                if (!same)
-                    return new ErrorToken($"Function Arguments for \"{name}\" don't match.");
+                if (diffindexes.Count > 0)
+                {
+                    string a = "";
+
+                    int last = diffindexes[diffindexes.Count - 1];
+                    diffindexes.RemoveAt(diffindexes.Count - 1);
+
+                    foreach (int index in diffindexes)
+                        a += $"At {index}: {args[index].GetType()} is not {temp[index]}, ";
+                    a += $"At {last}: {args[last].GetType()} is not {temp[last]}";
+
+                    return new ErrorToken($"Function Arguments for \"{name}\" don't match. ({a})");
+                }
             }
 
 
@@ -125,6 +137,17 @@ namespace Calculator
                     return new ErrorToken($"Index {index} is out of bounds.");
             }
 
+            if (name.Equals("set"))
+            {
+                int index = (int)((NumberToken)args[1]).value;
+                if (index >= 0 && index < ((BracketToken)args[0]).data.Length)
+                {
+                    ((BracketToken)args[0]).data[index] = args[2];
+                    return args[0];
+                }
+                else
+                    return new ErrorToken($"Index {index} is out of bounds.");
+            }
 
 
 
