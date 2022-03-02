@@ -88,9 +88,8 @@
             <Button Grid.Column="3" Grid.Row="0" x:Name="Button_del_var" Content="C VAR" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="25" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="MenuButtons"/>
 
 
-            <Button Grid.Column="0" Grid.Row="1" x:Name="Button_AAA" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
-            <Button Grid.Column="1" Grid.Row="1" x:Name="Button_AAAA" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Background="#FF08408B" FontSize="50" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Click="ButtonClick"/>
-
+            <Button Grid.Column="0" Grid.Row="1" x:Name="Button_s_load" Content="Load Session" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="193" Background="#FF08408B" FontSize="30" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Click="MenuButtons" Grid.ColumnSpan="2"/>
+            <Button Grid.Column="0" Grid.Row="2" x:Name="Button_s_save" Content="Save Session" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="193" Background="#FF08408B" FontSize="30" Foreground="#FF4AEFFF" FontStyle="Normal" FontWeight="Normal" BorderThickness="2,2,2,2" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Click="MenuButtons" Grid.ColumnSpan="2"/>
 
 
         </Grid>

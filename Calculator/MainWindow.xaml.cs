@@ -21,8 +21,8 @@ using Path = System.IO.Path;
 namespace Calculator
 {
     // TODO: 
+    // Implement Session Saving and Loading using recursive object serialization.
     // Implement History
-    // Implement Session Saving
     // Implement Customizability
     // Add Wolfram alpha API support
 
@@ -224,7 +224,15 @@ namespace Calculator
             {
                 Deg = !Deg;
             }
-            //Button_deg_rad
+            else if (name.Equals("Button_s_save"))
+            {
+
+            }
+            else if (name.Equals("Button_s_load"))
+            {
+
+            }
+            //Button_s_load
 
         }
 
