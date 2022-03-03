@@ -6,7 +6,7 @@ namespace Calculator
 {
     public partial class Solver
     {
-        private static Dictionary<string, EquationToken> variables;
+        public static Dictionary<string, EquationToken> variables;
         private static Dictionary<string, EquationToken> constants;
 
         public static void ClearVars()

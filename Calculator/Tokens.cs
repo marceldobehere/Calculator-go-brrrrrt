@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace Calculator
 {
@@ -17,7 +18,7 @@ namespace Calculator
             return newlist;
         }
 
-
+        [Serializable]
         public class EquationToken
         {
             public override string ToString()
@@ -114,8 +115,10 @@ namespace Calculator
             }
         }
 
+        [DataContract(IsReference = true)]
         public class NumberToken : EquationToken
         {
+            [DataMember]
             public double value;
             public override string ToString()
             {
@@ -128,8 +131,10 @@ namespace Calculator
             }
         }
 
+        [DataContract(IsReference = true)]
         public class ErrorToken : EquationToken
         {
+            [DataMember]
             public string message;
             public override string ToString()
             {
@@ -141,6 +146,7 @@ namespace Calculator
             }
         }
 
+        [DataContract(IsReference = true)]
         public class EmptyToken : EquationToken
         {
             public override string ToString()
@@ -149,8 +155,10 @@ namespace Calculator
             }
         }
 
+        [DataContract(IsReference = true)]
         public class VariableToken : EquationToken
         {
+            [DataMember]
             public string varname;
             public static int maxcounter = 0;
             public override string ToString()
@@ -182,6 +190,7 @@ namespace Calculator
             }
         }
 
+        [DataContract(IsReference = true)]
         public class OperatorToken : EquationToken
         {
             public enum Operation
@@ -226,6 +235,7 @@ namespace Calculator
                 return $"<Operator: {op}>";
             }
 
+            [DataMember]
             public Operation op;
             public OperatorToken(Operation op)
             {
@@ -233,8 +243,10 @@ namespace Calculator
             }
         }
 
+        [DataContract(IsReference = true)]
         public class VariableorFunctionToken : EquationToken
         {
+            [DataMember]
             public string name;
             public override string ToString()
             {
@@ -246,6 +258,7 @@ namespace Calculator
             }
         }
 
+        [DataContract(IsReference = true)]
         public class FunctionSplitterToken : EquationToken
         {
             public enum FunctionSplitterType
@@ -273,6 +286,7 @@ namespace Calculator
             {
                 return $"<{type}>";
             }
+            [DataMember]
             public FunctionSplitterType type;
             public FunctionSplitterToken(FunctionSplitterType type)
             {
@@ -280,9 +294,12 @@ namespace Calculator
             }
         }
 
+        [DataContract(IsReference = true)]
         public class FunctionToken : EquationToken
         {
+            [DataMember]
             public string name;
+            [DataMember]
             public EquationToken[] args;
             public FunctionToken(string name, EquationToken arg)
             {
@@ -309,9 +326,10 @@ namespace Calculator
             }
         }
 
+        [DataContract(IsReference = true)]
         public class BracketToken : EquationToken
         {
-
+            [DataMember]
             public EquationToken[] data;
             public BracketToken(EquationToken arg)
             {

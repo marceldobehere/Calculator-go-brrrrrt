@@ -17,6 +17,8 @@ using System.Globalization;
 using System.Diagnostics;
 using System.IO;
 using Path = System.IO.Path;
+using System.Runtime.Serialization;
+
 
 namespace Calculator
 {
@@ -108,6 +110,19 @@ namespace Calculator
                 }
             }
         }
+
+
+
+        public void SaveToFile()
+        {
+
+
+
+            var serializer = new DictionarySerializer<string, Solver.EquationToken>();
+            serializer.Serialize("session.xml", Solver.variables);
+        }
+
+
 
 
         public MainWindow()
@@ -226,7 +241,7 @@ namespace Calculator
             }
             else if (name.Equals("Button_s_save"))
             {
-
+                SaveToFile();
             }
             else if (name.Equals("Button_s_load"))
             {
