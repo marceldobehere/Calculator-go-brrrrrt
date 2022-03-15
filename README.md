@@ -6,4 +6,4 @@ WIP
 Supports +, -, *, /, ** or ^, %, (), variables, functions() and "arrays" (1,2,3)
 
 
-still working on functions and vars 
+working on session saving/loading and ig docs
