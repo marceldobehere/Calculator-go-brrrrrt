@@ -23,6 +23,9 @@ namespace Calculator
 
             FunctionArgs.Add("get", new Type[] { typeof(BracketToken), typeof(NumberToken) });
             FunctionArgs.Add("set", new Type[] { typeof(BracketToken), typeof(NumberToken), typeof(EquationToken) });
+
+            // binomial (n, k, p)
+            FunctionArgs.Add("binomial", new Type[] { typeof(NumberToken), typeof(NumberToken), typeof(NumberToken) });
         }
 
         private static double fact(int num)
@@ -31,6 +34,12 @@ namespace Calculator
             for (int i = 1; i <= num; i++)
                 res *= i;
             return res;
+        }
+
+        // (->p) (fact(5)/(fact(p)*fact(5-p)))*(0.6^p)*(0.4^(5-p))
+        private static double binomial(int n, int k, double p)
+        {
+            return (fact(n) / (fact(k) * fact(n-k))) * Math.Pow(p, k) * Math.Pow((1-p), (n-k));
         }
 
         private static EquationToken CallFunction(string name, EquationToken[] args)
@@ -131,7 +140,14 @@ namespace Calculator
                 return tempToken;
 
 
+            if (name.Equals("min"))
+                return new NumberToken(Math.Min(((NumberToken)args[0]).value, ((NumberToken)args[1]).value));
 
+            if (name.Equals("max"))
+                return new NumberToken(Math.Max(((NumberToken)args[0]).value, ((NumberToken)args[1]).value));
+
+            if (name.Equals("binomial"))
+                return new NumberToken(binomial((int)((NumberToken)args[0]).value, (int)(((NumberToken)args[1]).value), ((NumberToken)args[2]).value));
 
 
             if (name.Equals("pow"))
