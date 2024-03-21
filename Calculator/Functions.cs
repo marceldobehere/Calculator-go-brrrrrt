@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Calculator
@@ -13,7 +14,7 @@ namespace Calculator
             FunctionArgs = new Dictionary<string, Type[]>();
             FunctionArgs.Add("pow", new Type[] { typeof(NumberToken), typeof(NumberToken) });
 
-            foreach (string aaa in new string[] {"sin", "cos", "tan", "log_two", "asin", "acos", "atan", "abs", "acosh", "atanh", "cbrt", "ceiling", "cosh", "exp", "floor", "log", "log_ten", "round", "sign", "sinh", "sqrt", "tanh"})
+            foreach (string aaa in new string[] {"sin", "cos", "tan", "log_two", "asin", "acos", "atan", "abs", "acosh", "atanh", "cbrt", "ceiling", "cosh", "exp", "floor", "log", "log_ten", "round", "sign", "sinh", "sqrt", "tanh", "fact"})
                 FunctionArgs.Add(aaa, new Type[] { typeof(NumberToken) });
 
             // max min
@@ -24,6 +25,13 @@ namespace Calculator
             FunctionArgs.Add("set", new Type[] { typeof(BracketToken), typeof(NumberToken), typeof(EquationToken) });
         }
 
+        private static double fact(int num)
+        {
+            double res = 1;
+            for (int i = 1; i <= num; i++)
+                res *= i;
+            return res;
+        }
 
         private static EquationToken CallFunction(string name, EquationToken[] args)
         {
@@ -113,7 +121,8 @@ namespace Calculator
 
                 "round"    => new NumberToken(Math.Round(((NumberToken)args[0]).value)),
                 "sign"     => new NumberToken(Math.Sign(((NumberToken)args[0]).value)),
-                "sqrt"     => new NumberToken(Math.Sqrt(((NumberToken)args[0]).value)),
+                "sqrt" => new NumberToken(Math.Sqrt(((NumberToken)args[0]).value)),
+                "fact" => new NumberToken(fact((int)((NumberToken)args[0]).value)),
 
 
                 _          => new EmptyToken()

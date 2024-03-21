@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace Calculator
 {
@@ -115,7 +116,7 @@ namespace Calculator
             }
         }
 
-        [DataContract(IsReference = true)]
+        //[DataContract(IsReference = true)]
         public class NumberToken : EquationToken
         {
             [DataMember]
@@ -131,7 +132,7 @@ namespace Calculator
             }
         }
 
-        [DataContract(IsReference = true)]
+        //[DataContract(IsReference = true)]
         public class ErrorToken : EquationToken
         {
             [DataMember]
@@ -146,7 +147,7 @@ namespace Calculator
             }
         }
 
-        [DataContract(IsReference = true)]
+        //[DataContract(IsReference = true)]
         public class EmptyToken : EquationToken
         {
             public override string ToString()
@@ -190,7 +191,7 @@ namespace Calculator
             }
         }
 
-        [DataContract(IsReference = true)]
+        //[DataContract(IsReference = true)]
         public class OperatorToken : EquationToken
         {
             public enum Operation
@@ -243,7 +244,7 @@ namespace Calculator
             }
         }
 
-        [DataContract(IsReference = true)]
+        //[DataContract(IsReference = true)]
         public class VariableorFunctionToken : EquationToken
         {
             [DataMember]

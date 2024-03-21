@@ -5,18 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
-        Title="Masls super krasser Rechner" Height="700" Width="900" AllowsTransparency="True" WindowStyle="None" BorderThickness="2,10,5,2" MinWidth="800" MinHeight="500" MaxWidth="2000" MaxHeight="1000" Padding="0,0,0,49" Margin="0,0,0,0"
+        Title="Masls super krasser Rechner" Height="780" Width="900" AllowsTransparency="True" WindowStyle="None" BorderThickness="2,10,5,2" MinWidth="800" MinHeight="500" MaxWidth="2000" MaxHeight="1000" Padding="0,0,0,49" Margin="0,0,0,0"
         >
     <Window.Background>
         <SolidColorBrush Color="#FF071B47" Opacity="0.7"/>
     </Window.Background>
-    <Grid x:Name="Data" Width="900" Height="600" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid x:Name="Data" Width="900" Height="619" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <Border HorizontalAlignment="Center" VerticalAlignment="Top"
-              CornerRadius="5,5,0,0" Margin="0,-38,0,0" MouseLeftButtonDown="DragWindow" Height="56" Width="880">
+              CornerRadius="5,5,0,0" Margin="0,-60,0,0" MouseLeftButtonDown="DragWindow" Height="47" Width="880">
             <Border.Background>
                 <SolidColorBrush Color="#FF065478" Opacity="0.01"/>
             </Border.Background>
@@ -32,7 +32,7 @@
             </Grid>
         </Border>
 
-        <Grid Margin="0,176,0,-34">
+        <Grid Margin="0,204,0,-65">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -93,9 +93,9 @@
 
 
         </Grid>
-        <TextBox x:Name="Textbox" HorizontalAlignment="Center" Margin="0,10,0,0" Text="2 + 2" TextWrapping="Wrap" VerticalAlignment="Top" Width="856" Height="83" Background="#FF023F5B" Foreground="#FF16EEFF" FontSize="40" FontFamily="Cambria Math" IsReadOnly="True" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+        <TextBox x:Name="Textbox" HorizontalAlignment="Center" Margin="0,10,0,0" Text="2 + 2" TextWrapping="Wrap" VerticalAlignment="Top" Width="856" Height="132" Background="#FF023F5B" Foreground="#FF16EEFF" FontSize="40" FontFamily="Cambria Math" IsReadOnly="True" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
         </TextBox>
-        <TextBox x:Name="ResultBox" HorizontalAlignment="Center" Margin="0,111,0,0" Text="4" TextWrapping="Wrap" VerticalAlignment="Top" Width="856" Height="40" Background="#FF033349" Foreground="#FF1CEEFF" FontSize="30" FontFamily="Cambria Math" IsReadOnly="True" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto"/>
+        <TextBox x:Name="ResultBox" HorizontalAlignment="Center" Margin="0,164,0,0" Text="4" TextWrapping="Wrap" VerticalAlignment="Top" Width="856" Height="40" Background="#FF033349" Foreground="#FF1CEEFF" FontSize="30" FontFamily="Cambria Math" IsReadOnly="True" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto"/>
 
 
 
