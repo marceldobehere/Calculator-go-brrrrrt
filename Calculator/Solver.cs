@@ -413,7 +413,15 @@ namespace Calculator
 
                     change = false;
 
-                    foreach (OperatorToken.Operation currentop in new OperatorToken.Operation[] { OperatorToken.Operation.MOD, OperatorToken.Operation.POWER, OperatorToken.Operation.MULTIPLY, OperatorToken.Operation.DIVIDE, OperatorToken.Operation.PLUS, OperatorToken.Operation.MINUS })
+                    List<OperatorToken.Operation[]> levelOps = new List<OperatorToken.Operation[]>()
+                    {
+                        new OperatorToken.Operation[] {OperatorToken.Operation.POWER},
+                        new OperatorToken.Operation[] {OperatorToken.Operation.MOD},
+                        new OperatorToken.Operation[] {OperatorToken.Operation.MULTIPLY, OperatorToken.Operation.DIVIDE},
+                        new OperatorToken.Operation[] {OperatorToken.Operation.PLUS, OperatorToken.Operation.MINUS}
+                    };
+
+                    foreach (OperatorToken.Operation[] currentOps in levelOps)
                     {
 
                         for (int i = 0; i < tokens.Count; i++)
@@ -421,7 +429,7 @@ namespace Calculator
                             if (tokens[i] is OperatorToken)
                             {
                                 OperatorToken.Operation op = ((OperatorToken)tokens[i]).op;
-                                if (op == currentop)
+                                if (Array.IndexOf(currentOps, op) != -1)
                                 {
                                     if (i > 0 && i < tokens.Count - 1)
                                     {
