@@ -26,6 +26,9 @@ namespace Calculator
 
             // binomial (n, k, p)
             FunctionArgs.Add("binomial", new Type[] { typeof(NumberToken), typeof(NumberToken), typeof(NumberToken) });
+
+            // range
+            FunctionArgs.Add("range", new Type[] { typeof(NumberToken), typeof(NumberToken), typeof(NumberToken) });
         }
 
         private static double fact(int num)
@@ -152,6 +155,25 @@ namespace Calculator
 
             if (name.Equals("pow"))
                 return new NumberToken(Math.Pow(((NumberToken)args[0]).value, ((NumberToken)args[1]).value));
+
+            if (name.Equals("range"))
+            {
+                double start = ((NumberToken)args[0]).value;
+                double stop = ((NumberToken)args[1]).value;
+                double step = ((NumberToken)args[2]).value;
+
+                List<EquationToken> vals = new List<EquationToken>();
+                if (step == 0)
+                    ;
+                else if (step > 0)
+                    for (double i = start; i <= stop; i += step)
+                        vals.Add(new NumberToken(i));
+                else
+                    for (double i = start; i >= stop; i += step)
+                        vals.Add(new NumberToken(i));
+
+                return new BracketToken(vals.ToArray());
+            }
 
             if (name.Equals("get"))
             {
