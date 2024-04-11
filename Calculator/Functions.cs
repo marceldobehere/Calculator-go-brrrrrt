@@ -39,10 +39,30 @@ namespace Calculator
             return res;
         }
 
+        public static double getnCk(long n, long k)
+        {
+            //double buffern = n * Math.Log(n) - n;
+            //double bufferk = k * Math.Log(k) - k;
+            //double bufferkn = Math.Abs(n - k) * Math.Log(Math.Abs(n - k)) - Math.Abs(n - k);
+
+            //return Math.Exp(buffern) / (Math.Exp(bufferk) * Math.Exp(bufferkn));
+            if (k > n) return 0;
+            if (n == k) return 1; // only one way to chose when n == k
+            if (k > n - k) k = n - k; // Everything is symmetric around n-k, so it is quicker to iterate over a smaller k than a larger one.
+            double c = 1;
+            for (long i = 1; i <= k; i++)
+            {
+                c *= n--;
+                c /= i;
+            }
+            return c;
+        }
+
         // (->p) (fact(5)/(fact(p)*fact(5-p)))*(0.6^p)*(0.4^(5-p))
         private static double binomial(int n, int k, double p)
         {
-            return (fact(n) / (fact(k) * fact(n-k))) * Math.Pow(p, k) * Math.Pow((1-p), (n-k));
+            //return (fact(n) / (fact(k) * fact(n-k))) * Math.Pow(p, k) * Math.Pow((1-p), (n-k));
+            return getnCk(n, k) * Math.Pow(p, k) * Math.Pow((1 - p), (n - k));
         }
 
         private static EquationToken CallFunction(string name, EquationToken[] args)
