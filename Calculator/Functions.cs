@@ -14,7 +14,7 @@ namespace Calculator
             FunctionArgs = new Dictionary<string, Type[]>();
             FunctionArgs.Add("pow", new Type[] { typeof(NumberToken), typeof(NumberToken) });
 
-            foreach (string aaa in new string[] {"sin", "cos", "tan", "log_two", "asin", "acos", "atan", "abs", "acosh", "atanh", "cbrt", "ceiling", "cosh", "exp", "floor", "log", "log_ten", "round", "sign", "sinh", "sqrt", "tanh", "fact"})
+            foreach (string aaa in new string[] {"sin", "cos", "tan", "log_two", "asin", "acos", "atan", "abs", "acosh", "atanh", "cbrt", "ceiling", "cosh", "exp", "floor", "log", "log_ten", "round", "sign", "sinh", "sqrt", "√", "tanh", "fact"})
                 FunctionArgs.Add(aaa, new Type[] { typeof(NumberToken) });
 
             // max min
@@ -155,6 +155,8 @@ namespace Calculator
                 "sign"     => new NumberToken(Math.Sign(((NumberToken)args[0]).value)),
                 "sqrt" => new NumberToken(Math.Sqrt(((NumberToken)args[0]).value)),
                 "fact" => new NumberToken(fact((int)((NumberToken)args[0]).value)),
+
+                "√" => new NumberToken(Math.Sqrt(((NumberToken)args[0]).value)),
 
 
                 _          => new EmptyToken()
